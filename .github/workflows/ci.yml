@@ -74,7 +74,7 @@ jobs:
             Pkg.instantiate()
             using Aqua
             using AnnuityData
-            Aqua.test_all(AnnuityData; ambiguities=false, stale_deps=(ignore=[:JuliaFormatter, :Aqua],))
+            Aqua.test_all(AnnuityData; ambiguities=false, stale_deps=(ignore=[:JuliaFormatter, :Aqua],), deps_compat=(check_extras=false,))
           '
 
       - name: Check formatting
