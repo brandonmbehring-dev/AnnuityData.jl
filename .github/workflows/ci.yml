@@ -12,6 +12,7 @@ jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.version == 'nightly' }}
     strategy:
       fail-fast: false
       matrix:
@@ -82,6 +83,6 @@ jobs:
           julia --project=. -e '
             using JuliaFormatter
             # Check if files are formatted (BlueStyle)
-            result = format("src/", BlueStyle(), check_format=true)
+            result = format("src/", BlueStyle())
             result || error("Files not formatted according to BlueStyle")
           '
