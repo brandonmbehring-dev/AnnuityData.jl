@@ -41,15 +41,22 @@ function MYGAProduct(;
     product_name::String,
     fixed_rate::Float64,
     term_years::Int,
-    effective_yield::Float64 = fixed_rate,
-    am_best_rating::String = "A",
-    min_premium::Float64 = 10000.0,
-    surrender_years::Int = term_years
+    effective_yield::Float64=fixed_rate,
+    am_best_rating::String="A",
+    min_premium::Float64=10000.0,
+    surrender_years::Int=term_years,
 )
-    MYGAProduct(company, product_name, fixed_rate, term_years,
-                effective_yield, am_best_rating, min_premium, surrender_years)
+    MYGAProduct(
+        company,
+        product_name,
+        fixed_rate,
+        term_years,
+        effective_yield,
+        am_best_rating,
+        min_premium,
+        surrender_years,
+    )
 end
-
 
 # =============================================================================
 # FIA (Fixed Indexed Annuity)
@@ -91,21 +98,30 @@ end
 function FIAProduct(;
     company::String,
     product_name::String,
-    cap_rate::Union{Float64,Nothing} = nothing,
-    participation_rate::Union{Float64,Nothing} = nothing,
-    spread_rate::Union{Float64,Nothing} = nothing,
-    trigger_rate::Union{Float64,Nothing} = nothing,
-    trigger_threshold::Float64 = 0.0,
-    index_used::String = "S&P 500",
-    term_years::Int = 1,
-    floor_rate::Float64 = 0.0,
-    crediting_method::Symbol = :cap
+    cap_rate::Union{Float64,Nothing}=nothing,
+    participation_rate::Union{Float64,Nothing}=nothing,
+    spread_rate::Union{Float64,Nothing}=nothing,
+    trigger_rate::Union{Float64,Nothing}=nothing,
+    trigger_threshold::Float64=0.0,
+    index_used::String="S&P 500",
+    term_years::Int=1,
+    floor_rate::Float64=0.0,
+    crediting_method::Symbol=:cap,
 )
-    FIAProduct(company, product_name, cap_rate, participation_rate,
-               spread_rate, trigger_rate, trigger_threshold, index_used,
-               term_years, floor_rate, crediting_method)
+    FIAProduct(
+        company,
+        product_name,
+        cap_rate,
+        participation_rate,
+        spread_rate,
+        trigger_rate,
+        trigger_threshold,
+        index_used,
+        term_years,
+        floor_rate,
+        crediting_method,
+    )
 end
-
 
 # =============================================================================
 # RILA (Registered Index-Linked Annuity)
@@ -145,20 +161,28 @@ end
 function RILAProduct(;
     company::String,
     product_name::String,
-    buffer_rate::Union{Float64,Nothing} = nothing,
-    floor_rate::Union{Float64,Nothing} = nothing,
-    cap_rate::Union{Float64,Nothing} = nothing,
-    protection_type::Symbol = :buffer,
-    index_used::String = "S&P 500",
-    term_years::Int = 6,
-    step_rate_tier1::Union{Float64,Nothing} = nothing,
-    step_rate_tier2::Union{Float64,Nothing} = nothing
+    buffer_rate::Union{Float64,Nothing}=nothing,
+    floor_rate::Union{Float64,Nothing}=nothing,
+    cap_rate::Union{Float64,Nothing}=nothing,
+    protection_type::Symbol=:buffer,
+    index_used::String="S&P 500",
+    term_years::Int=6,
+    step_rate_tier1::Union{Float64,Nothing}=nothing,
+    step_rate_tier2::Union{Float64,Nothing}=nothing,
 )
-    RILAProduct(company, product_name, buffer_rate, floor_rate, cap_rate,
-                protection_type, index_used, term_years,
-                step_rate_tier1, step_rate_tier2)
+    RILAProduct(
+        company,
+        product_name,
+        buffer_rate,
+        floor_rate,
+        cap_rate,
+        protection_type,
+        index_used,
+        term_years,
+        step_rate_tier1,
+        step_rate_tier2,
+    )
 end
-
 
 # =============================================================================
 # GLWB (Guaranteed Lifetime Withdrawal Benefit)
@@ -194,13 +218,21 @@ end
 function GLWBProduct(;
     company::String,
     product_name::String,
-    withdrawal_rate::Float64 = 0.05,
-    rollup_rate::Float64 = 0.05,
-    rollup_years::Int = 10,
-    step_up_frequency::Symbol = :annual,
-    rider_fee::Float64 = 0.01,
-    fee_basis::Symbol = :gwb
+    withdrawal_rate::Float64=0.05,
+    rollup_rate::Float64=0.05,
+    rollup_years::Int=10,
+    step_up_frequency::Symbol=:annual,
+    rider_fee::Float64=0.01,
+    fee_basis::Symbol=:gwb,
 )
-    GLWBProduct(company, product_name, withdrawal_rate, rollup_rate,
-                rollup_years, step_up_frequency, rider_fee, fee_basis)
+    GLWBProduct(
+        company,
+        product_name,
+        withdrawal_rate,
+        rollup_rate,
+        rollup_years,
+        step_up_frequency,
+        rider_fee,
+        fee_basis,
+    )
 end

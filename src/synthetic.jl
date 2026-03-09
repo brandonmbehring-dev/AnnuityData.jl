@@ -68,7 +68,11 @@ function load_products(provider::SyntheticProvider, product_type::Symbol)
     elseif product_type == :rila
         return _parse_rila_products(rates)
     else
-        throw(ArgumentError("Unknown product type: $product_type. Expected :myga, :fia, or :rila"))
+        throw(
+            ArgumentError(
+                "Unknown product type: $product_type. Expected :myga, :fia, or :rila"
+            ),
+        )
     end
 end
 
@@ -88,7 +92,6 @@ function load_payoff_truth_table(provider::SyntheticProvider)
     CSV.read(csv_path, DataFrame)
 end
 
-
 # =============================================================================
 # Internal parsing functions
 # =============================================================================
@@ -98,15 +101,15 @@ function _parse_myga_products(rates::DataFrame)
     products = MYGAProduct[]
 
     for row in eachrow(myga_rows)
-        product = MYGAProduct(
-            company = String(row.companyName),
-            product_name = String(row.productName),
-            fixed_rate = _safe_float(row.fixedRate),
-            term_years = _safe_int(row.termYears),
-            effective_yield = _get_col(row, :effectiveYield, row.fixedRate) |> _safe_float,
-            am_best_rating = _get_col(row, :amBestRating, "A") |> _to_string,
-            min_premium = _get_col(row, :minPremium, 10000.0) |> _safe_float,
-            surrender_years = _get_col(row, :surrChargeDuration, row.termYears) |> _safe_int
+        product = MYGAProduct(;
+            company=String(row.companyName),
+            product_name=String(row.productName),
+            fixed_rate=_safe_float(row.fixedRate),
+            term_years=_safe_int(row.termYears),
+            effective_yield=_safe_float(_get_col(row, :effectiveYield, row.fixedRate)),
+            am_best_rating=_to_string(_get_col(row, :amBestRating, "A")),
+            min_premium=_safe_float(_get_col(row, :minPremium, 10000.0)),
+            surrender_years=_safe_int(_get_col(row, :surrChargeDuration, row.termYears)),
         )
         push!(products, product)
     end
@@ -137,18 +140,18 @@ function _parse_fia_products(rates::DataFrame)
             :cap  # default
         end
 
-        product = FIAProduct(
-            company = String(row.companyName),
-            product_name = String(row.productName),
-            cap_rate = _safe_float_or_nothing(cap_val),
-            participation_rate = _safe_float_or_nothing(part_val),
-            spread_rate = _safe_float_or_nothing(spread_val),
-            trigger_rate = _safe_float_or_nothing(trigger_val),
-            trigger_threshold = _get_col(row, :triggerThreshold, 0.0) |> _safe_float,
-            index_used = _get_col(row, :indexUsed, "S&P 500") |> _to_string,
-            term_years = _safe_int(row.termYears),
-            floor_rate = 0.0,  # FIA always has 0% floor
-            crediting_method = crediting_method
+        product = FIAProduct(;
+            company=String(row.companyName),
+            product_name=String(row.productName),
+            cap_rate=_safe_float_or_nothing(cap_val),
+            participation_rate=_safe_float_or_nothing(part_val),
+            spread_rate=_safe_float_or_nothing(spread_val),
+            trigger_rate=_safe_float_or_nothing(trigger_val),
+            trigger_threshold=_safe_float(_get_col(row, :triggerThreshold, 0.0)),
+            index_used=_to_string(_get_col(row, :indexUsed, "S&P 500")),
+            term_years=_safe_int(row.termYears),
+            floor_rate=0.0,  # FIA always has 0% floor
+            crediting_method=crediting_method,
         )
         push!(products, product)
     end
@@ -169,24 +172,23 @@ function _parse_rila_products(rates::DataFrame)
             :floor
         end
 
-        product = RILAProduct(
-            company = String(row.companyName),
-            product_name = String(row.productName),
-            buffer_rate = _safe_float_or_nothing(_get_col(row, :bufferRate, missing)),
-            floor_rate = _safe_float_or_nothing(_get_col(row, :floorRate, missing)),
-            cap_rate = _safe_float_or_nothing(_get_col(row, :capRate, missing)),
-            protection_type = protection_type,
-            index_used = _get_col(row, :indexUsed, "S&P 500") |> _to_string,
-            term_years = _safe_int(row.termYears),
-            step_rate_tier1 = nothing,
-            step_rate_tier2 = nothing
+        product = RILAProduct(;
+            company=String(row.companyName),
+            product_name=String(row.productName),
+            buffer_rate=_safe_float_or_nothing(_get_col(row, :bufferRate, missing)),
+            floor_rate=_safe_float_or_nothing(_get_col(row, :floorRate, missing)),
+            cap_rate=_safe_float_or_nothing(_get_col(row, :capRate, missing)),
+            protection_type=protection_type,
+            index_used=_to_string(_get_col(row, :indexUsed, "S&P 500")),
+            term_years=_safe_int(row.termYears),
+            step_rate_tier1=nothing,
+            step_rate_tier2=nothing,
         )
         push!(products, product)
     end
 
     return products
 end
-
 
 # =============================================================================
 # Helper functions
